@@ -1,0 +1,23 @@
+CHANGELOG.md
+  a23f1cd94af96afc 1-10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.15",
+  "base_commit_sha": "330580180d8184800d2e117d28ea7f6a8cdffbf5",
+  "prompts": {
+    "a23f1cd94af96afc": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "b8609fea-8b57-4eb4-afef-2248da0effe7",
+        "model": "copilot/auto"
+      },
+      "human_author": "Rob Becker <rob.becker@workiva.com>",
+      "messages": [],
+      "total_additions": 10,
+      "total_deletions": 0,
+      "accepted_lines": 10,
+      "overriden_lines": 0
+    }
+  }
+}
