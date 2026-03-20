@@ -1,0 +1,90 @@
+test/fixtures/pubmod/recursive/packages/double_quoted/pubspec.yaml
+  cd5636c549f552e4 1-6
+test/fixtures/pubmod/sdk_recursive/packages/double_quoted/pubspec.yaml
+  1a56a417797b8f87 6
+analysis_options.yaml
+  3a922d4de719a499 1-3
+test/fixtures/pubmod/recursive/packages/bad/pubspec.yaml
+  cd5636c549f552e4 1-2
+README.md
+  3a922d4de719a499 27-30,70,72-85,87,89,91-94,96,98,100-171,173-178,197
+test/fixtures/pubmod/sdk_recursive/packages/bad/pubspec.yaml
+  1a56a417797b8f87 1-5
+pubspec.yaml
+  cd5636c549f552e4 7,16-18
+test/pm_test.dart
+  1a56a417797b8f87 20-60,64-102,264-269
+test/fixtures/pubmod/recursive/packages/child/pubspec.yaml
+  cd5636c549f552e4 3-5
+Makefile
+  3a922d4de719a499 13-25,36-39
+test/fixtures/pubmod/sdk_recursive/packages/no_env/pubspec.yaml
+  1a56a417797b8f87 3-4
+test/fixtures/pubmod/recursive/packages/hosted/pubspec.yaml
+  cd5636c549f552e4 1-8
+.github/workflows/ci.yml
+  3a922d4de719a499 1-32
+test/fixtures/pubmod/recursive/pubspec.yaml
+  cd5636c549f552e4 5
+bin/pm.dart
+  1a56a417797b8f87 10,12,14,57,59-76,91,141-143,155,269-348,369,371,373,394-401,497,500,503,584-585,589-601
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.15",
+  "base_commit_sha": "5ba5a028dcce3264fd2c83330e524bfe2a32d6ea",
+  "prompts": {
+    "1a56a417797b8f87": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "3883f710-5f62-40f9-8228-c11c81346459",
+        "model": "copilot/auto"
+      },
+      "human_author": "Rob Becker <rob.becker@workiva.com>",
+      "messages": [],
+      "total_additions": 273,
+      "total_deletions": 34,
+      "accepted_lines": 230,
+      "overriden_lines": 3
+    },
+    "3a922d4de719a499": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "a25e5bec-8a45-4ab9-8c59-03f8e478caab",
+        "model": "copilot/auto"
+      },
+      "human_author": "Rob Becker <rob.becker@workiva.com>",
+      "messages": [],
+      "total_additions": 161,
+      "total_deletions": 6,
+      "accepted_lines": 158,
+      "overriden_lines": 2
+    },
+    "8385460c28ea99e7": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "7dd00dbc-d2c7-4a20-91fc-30ee47099f64",
+        "model": "unknown"
+      },
+      "human_author": "Rob Becker <rob.becker@workiva.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "cd5636c549f552e4": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "a411be9d-4408-41c7-a239-bf9436f079ac",
+        "model": "copilot/auto"
+      },
+      "human_author": "Rob Becker <rob.becker@workiva.com>",
+      "messages": [],
+      "total_additions": 788,
+      "total_deletions": 82,
+      "accepted_lines": 661,
+      "overriden_lines": 25
+    }
+  }
+}
