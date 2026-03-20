@@ -15,13 +15,13 @@ const _commandSet = 'set';
 const _commandSetSdk = 'set-sdk';
 const _commandTighten = 'tighten';
 
-const _usageHeader = 'Usage: dart run pubmod <command> [arguments]';
+const _usageHeader = 'Usage: dart run pm <command> [arguments]';
 
 Future<void> main(List<String> args) async {
   final exitCode = await _run(args);
   if (exitCode != 0) {
     // ignore: avoid_print
-    stderr.writeln('pubmod failed with exit code $exitCode.');
+    stderr.writeln('pm failed with exit code $exitCode.');
   }
   exit(exitCode);
 }
