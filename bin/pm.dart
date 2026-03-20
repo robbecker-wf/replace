@@ -70,8 +70,7 @@ Future<int> _run(List<String> args) async {
 
     final failOnParseError = results['fail-on-parse-error'] as bool;
     final recursive = results['recursive'] as bool;
-    final lockfilePath =
-        rest.isEmpty ? 'pubspec.lock' : rest.single.trim();
+    final lockfilePath = rest.isEmpty ? 'pubspec.lock' : rest.single.trim();
     if (lockfilePath.isEmpty) {
       stderr.writeln('Lockfile path must not be empty.');
       return 64;
@@ -528,8 +527,8 @@ void _printUsage(ArgParser parser) {
       '  raise-max-sdk Raise the maximum allowed SDK version (exclusive) in environment.sdk.');
   stdout.writeln(
       '  raise-min-sdk Raise the minimum allowed SDK version (inclusive) in environment.sdk.');
-    stdout.writeln('(pubspec.yaml)');
-    stdout.writeln(
+  stdout.writeln('(pubspec.yaml)');
+  stdout.writeln(
       '  tighten     Raise all minimum dependency versions from pubspec.lock (or a provided lockfile path).');
 }
 
