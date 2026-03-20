@@ -1,0 +1,41 @@
+README.md
+  1a56a417797b8f87 112-114,151-152,154-155,215-216
+  2c6157017c755279 2,14,26-27,31,36,43-44,59-60,87,94,104
+bin/pm.dart
+  2c6157017c755279 29,39,45,51,85,93,96-97,103,119,124,138,140,144,151-152,161,165,167,171,176,182,186,194-196,201,205,208,217,220,237,261,268,270,276,284-286,291,300,303,313,321,345,352,354-355,360,380-385,387,399,438,444,449,455,519,545,550,556,565,574,577,584,598-606,610,614,624-654,656,676,691,696,701
+test/pm_test.dart
+  2c6157017c755279 214-216,218-243,245-247,249-282,284-305,307-317,336-337,377-383
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.15",
+  "base_commit_sha": "c3ff1a2ed1fff47f68fded7ed06e0173d7f1d75a",
+  "prompts": {
+    "1a56a417797b8f87": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "3883f710-5f62-40f9-8228-c11c81346459",
+        "model": "copilot/auto"
+      },
+      "human_author": "Rob Becker <rob.becker@workiva.com>",
+      "messages": [],
+      "total_additions": 17,
+      "total_deletions": 0,
+      "accepted_lines": 11,
+      "overriden_lines": 6
+    },
+    "2c6157017c755279": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "0a53a508-f5c4-4275-9445-4b4c5ef3b95b",
+        "model": "copilot/auto"
+      },
+      "human_author": "Rob Becker <rob.becker@workiva.com>",
+      "messages": [],
+      "total_additions": 932,
+      "total_deletions": 695,
+      "accepted_lines": 260,
+      "overriden_lines": 6
+    }
+  }
+}
