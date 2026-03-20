@@ -1,6 +1,0 @@
-name: sdk_recursive_double_quoted_fixture
-version: 0.0.1
-environment:
-  sdk: ">=3.2.0 <4.0.0"
-dependencies:
-  path: ^1.9.0

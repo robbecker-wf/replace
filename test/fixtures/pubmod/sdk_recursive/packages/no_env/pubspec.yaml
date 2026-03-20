@@ -1,4 +1,0 @@
-name: sdk_recursive_no_env_fixture
-version: 0.0.1
-dependencies:
-  path: ^1.9.0
