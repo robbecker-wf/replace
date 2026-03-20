@@ -346,6 +346,51 @@ dependencies:
       expect(result.exitCode, 1);
       expect(result.stderr.toString(), contains('Unable to parse'));
     });
+
+    test('tighten raises minimums from pubspec.lock by default', () async {
+      final workDir = _copyFixture('tighten_basic', scratchRoot);
+
+      final result = await _runPubmod(
+        ['tighten'],
+        workingDirectory: workDir.path,
+      );
+
+      expect(result.exitCode, 0, reason: result.stderr.toString());
+      await _assertPubGetParses(workDir.path);
+      _expectUpdateOutput(result.stdout.toString());
+
+      final content =
+          File(p.join(workDir.path, 'pubspec.yaml')).readAsStringSync();
+
+      expect(_hasConstraint(content, 'args', '^2.3.0'), isTrue);
+      expect(_hasConstraint(content, 'path', '^1.9.1'), isTrue);
+      expect(_hasConstraint(content, 'version', '>=0.2.3 <1.0.0'), isTrue);
+      expect(_hasConstraint(content, 'test', '^1.25.15'), isTrue);
+    });
+
+    test('tighten accepts a custom lockfile path', () async {
+      final workDir = _copyFixture('tighten_basic', scratchRoot);
+      final customLockPath = p.join(workDir.path, 'custom.lock');
+
+      File(p.join(workDir.path, 'pubspec.lock')).renameSync(customLockPath);
+
+      final result = await _runPubmod(
+        ['tighten', customLockPath],
+        workingDirectory: workDir.path,
+      );
+
+      expect(result.exitCode, 0, reason: result.stderr.toString());
+      await _assertPubGetParses(workDir.path);
+      _expectUpdateOutput(result.stdout.toString());
+
+      final content =
+          File(p.join(workDir.path, 'pubspec.yaml')).readAsStringSync();
+
+      expect(_hasConstraint(content, 'args', '^2.3.0'), isTrue);
+      expect(_hasConstraint(content, 'path', '^1.9.1'), isTrue);
+      expect(_hasConstraint(content, 'version', '>=0.2.3 <1.0.0'), isTrue);
+      expect(_hasConstraint(content, 'test', '^1.25.15'), isTrue);
+    });
   });
 }
 

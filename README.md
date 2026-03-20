@@ -93,12 +93,13 @@ Global options:
 Commands:
 
 - `set` Set dependency constraint exactly as provided
-- `set-sdk` Set `environment.sdk` constraint exactly as provided
 - `raise-min` Raise the minimum bound (inclusive) of a version range
-- `raise-min-sdk` Raise the minimum `environment.sdk` bound (inclusive)
 - `raise-max` Raise the maximum bound (exclusive) of a version range
-- `raise-max-sdk` Raise the maximum `environment.sdk` bound (exclusive)
 - `lower-max` Lower the maximum bound (exclusive) of a version range
+- `set-sdk` Set `environment.sdk` constraint exactly as provided
+- `raise-min-sdk` Raise the minimum `environment.sdk` bound (inclusive)
+- `raise-max-sdk` Raise the maximum `environment.sdk` bound (exclusive)
+- `tighten` Raise all dependency minimums to resolved versions from `pubspec.lock` (or a provided lockfile path)
 
 Notes:
 
@@ -109,6 +110,7 @@ Notes:
 - `raise-min`, `raise-max`, and `lower-max` expect a specific semantic version, for example `1.9.1`
 - `raise-min-sdk` and `raise-max-sdk` expect a specific semantic version, for example `3.4.0`
 - Tightening is enabled by default and only rewrites when the updated range is exactly equivalent to a caret constraint
+- `tighten` reads `pubspec.lock` in the current directory by default and applies the equivalent of `raise-min <dep> <locked-version> --tighten` for each locked package
   - `'>=3.0.0 <4.0.0'` becomes `^3.0.0`
   - `'>=0.18.2 <0.19.0'` becomes `^0.18.2`
   - `'>=1.2.3 <4.0.0'` stays as a range (not equivalent to a caret constraint)
@@ -221,4 +223,16 @@ Raise SDK maximum recursively:
 
 ```sh
 pm raise-max-sdk 5.0.0 -r
+```
+
+Tighten dependency minimums to resolved lockfile versions:
+
+```sh
+pm tighten
+```
+
+Use a custom lockfile path:
+
+```sh
+pm tighten path/to/pubspec.lock
 ```

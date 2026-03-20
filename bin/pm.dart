@@ -4,6 +4,7 @@ import 'package:args/args.dart';
 import 'package:pub_semver/pub_semver.dart' as semver;
 import 'package:pubspec_manager/pubspec_manager.dart'
     hide Version, VersionConstraint;
+import 'package:yaml/yaml.dart';
 
 const _commandLowerMax = 'lower-max';
 const _commandRaiseMax = 'raise-max';
@@ -12,6 +13,7 @@ const _commandRaiseMin = 'raise-min';
 const _commandRaiseMinSdk = 'raise-min-sdk';
 const _commandSet = 'set';
 const _commandSetSdk = 'set-sdk';
+const _commandTighten = 'tighten';
 
 const _usageHeader = 'Usage: dart run pubmod <command> [arguments]';
 
@@ -54,6 +56,110 @@ Future<int> _run(List<String> args) async {
     _printUsage(parser);
     return 64;
   }
+
+  if (commandName == _commandTighten) {
+    final rest = command.rest;
+    if (rest.length > 1) {
+      stderr.writeln(
+        'Command "$commandName" accepts at most 1 argument: [lockfile_path]',
+      );
+      stderr.writeln('');
+      _printUsage(parser);
+      return 64;
+    }
+
+    final failOnParseError = results['fail-on-parse-error'] as bool;
+    final recursive = results['recursive'] as bool;
+    final lockfilePath =
+        rest.isEmpty ? 'pubspec.lock' : rest.single.trim();
+    if (lockfilePath.isEmpty) {
+      stderr.writeln('Lockfile path must not be empty.');
+      return 64;
+    }
+
+    final lockfile = File(lockfilePath);
+    if (!lockfile.existsSync()) {
+      stderr.writeln('Lockfile not found: ${lockfile.path}');
+      return 64;
+    }
+
+    Map<String, String> lockedVersions;
+    try {
+      lockedVersions = _readLockedDependencyVersions(lockfile);
+    } on FormatException catch (e) {
+      stderr.writeln('Unable to parse ${lockfile.path}: ${e.message}');
+      return 64;
+    }
+
+    if (lockedVersions.isEmpty) {
+      return 0;
+    }
+
+    final pubspecFiles = _findPubspecFiles(recursive: recursive);
+    if (pubspecFiles.isEmpty) {
+      return 0;
+    }
+
+    var hadParseError = false;
+    for (final path in pubspecFiles) {
+      PubSpec pubspec;
+      try {
+        pubspec = PubSpec.loadFromPath(path);
+      } catch (e) {
+        hadParseError = true;
+        stderr.writeln('Unable to parse $path: $e');
+        if (failOnParseError) {
+          return 1;
+        }
+        continue;
+      }
+
+      final before = File(path).readAsStringSync();
+      final updateMessages = <String>[];
+
+      for (final entry in lockedVersions.entries) {
+        updateMessages.addAll(
+          _applyToDependencies(
+            pubspec.dependencies,
+            entry.key,
+            _Operation.raiseMin,
+            entry.value,
+            tighten: true,
+          ),
+        );
+        updateMessages.addAll(
+          _applyToDependencies(
+            pubspec.devDependencies,
+            entry.key,
+            _Operation.raiseMin,
+            entry.value,
+            tighten: true,
+          ),
+        );
+      }
+
+      if (updateMessages.isEmpty) {
+        continue;
+      }
+
+      final after = pubspec.toString();
+      if (before == after) {
+        continue;
+      }
+
+      pubspec.saveTo(path);
+      for (final message in updateMessages) {
+        stdout.writeln(message);
+      }
+    }
+
+    if (failOnParseError && hadParseError) {
+      return 1;
+    }
+
+    return 0;
+  }
+
   final targetsSdk = _isSdkCommand(commandName);
   final rest = command.rest;
   late String dependencyName;
@@ -393,6 +499,7 @@ ArgParser _buildParser() {
     _commandRaiseMinSdk,
     _commandSet,
     _commandSetSdk,
+    _commandTighten,
   ]) {
     parser.addCommand(command);
   }
@@ -421,6 +528,9 @@ void _printUsage(ArgParser parser) {
       '  raise-max-sdk Raise the maximum allowed SDK version (exclusive) in environment.sdk.');
   stdout.writeln(
       '  raise-min-sdk Raise the minimum allowed SDK version (inclusive) in environment.sdk.');
+    stdout.writeln('(pubspec.yaml)');
+    stdout.writeln(
+      '  tighten     Raise all minimum dependency versions from pubspec.lock (or a provided lockfile path).');
 }
 
 bool _isSdkCommand(String commandName) {
@@ -726,4 +836,41 @@ bool _looksLikeRangeConstraint(String value) {
       value.startsWith('<=') ||
       value.startsWith('>') ||
       value.startsWith('<');
+}
+
+Map<String, String> _readLockedDependencyVersions(File lockfile) {
+  final content = lockfile.readAsStringSync();
+  final parsed = loadYaml(content);
+  if (parsed is! YamlMap) {
+    throw const FormatException('Lockfile root must be a YAML map.');
+  }
+
+  final packagesNode = parsed['packages'];
+  if (packagesNode is! YamlMap) {
+    throw const FormatException('Lockfile is missing a valid "packages" map.');
+  }
+
+  final versions = <String, String>{};
+  for (final entry in packagesNode.entries) {
+    final packageName = entry.key;
+    final packageConfig = entry.value;
+    if (packageName is! String || packageConfig is! YamlMap) {
+      continue;
+    }
+
+    final versionValue = packageConfig['version'];
+    if (versionValue is! String) {
+      continue;
+    }
+
+    try {
+      semver.Version.parse(versionValue.trim());
+    } on FormatException {
+      continue;
+    }
+    versions[packageName] = versionValue.trim();
+  }
+
+  final sortedKeys = versions.keys.toList()..sort();
+  return {for (final key in sortedKeys) key: versions[key]!};
 }
