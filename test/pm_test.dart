@@ -160,7 +160,7 @@ void main() {
     });
 
     test('tighten defaults to true for dependency updates in recursive scan',
-      () async {
+        () async {
       final workDir = _copyFixture('recursive', scratchRoot);
 
       final result = await _runPm(
@@ -180,7 +180,7 @@ void main() {
     });
 
     test('tighten defaults to true for sdk updates in recursive scan',
-      () async {
+        () async {
       final workDir = _copyFixture('sdk_recursive', scratchRoot);
 
       final result = await _runPm(
@@ -266,8 +266,9 @@ dependencies:
       expect(content, isNot(contains('path: ^1.9.1')));
     });
 
-    test('fail-on-parse-error returns non-zero when recursive scan hits malformed pubspec',
-      () async {
+    test(
+        'fail-on-parse-error returns non-zero when recursive scan hits malformed pubspec',
+        () async {
       final workDir = _copyFixture('recursive', scratchRoot);
       _writeMalformedPubspec(workDir, 'packages/bad/pubspec.yaml');
 
