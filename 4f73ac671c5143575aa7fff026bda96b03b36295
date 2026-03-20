@@ -1,0 +1,23 @@
+test/pm_test.dart
+  34cf6dcedf8a534a 286,309,377-420
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.15",
+  "base_commit_sha": "4f73ac671c5143575aa7fff026bda96b03b36295",
+  "prompts": {
+    "34cf6dcedf8a534a": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "b5609174-dba5-4813-8735-078e31111363",
+        "model": "copilot/auto"
+      },
+      "human_author": "Rob Becker <rob.becker@workiva.com>",
+      "messages": [],
+      "total_additions": 49,
+      "total_deletions": 2,
+      "accepted_lines": 49,
+      "overriden_lines": 0
+    }
+  }
+}
