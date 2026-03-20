@@ -1,0 +1,5 @@
+name: sdk_recursive_bad_fixture
+version: 0.0.1
+dependencies:
+  foo: ^1.0.0
+  foo: ^2.0.0
