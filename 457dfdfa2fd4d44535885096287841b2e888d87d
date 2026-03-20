@@ -1,0 +1,31 @@
+pubspec.yaml
+  34cf6dcedf8a534a 15
+test/fixtures/pubmod/tighten_basic/pubspec.yaml
+  34cf6dcedf8a534a 6-12
+bin/pm.dart
+  34cf6dcedf8a534a 7,16,59-162,502,532,840-875
+test/pm_test.dart
+  34cf6dcedf8a534a 349-366,368-390,392-393
+README.md
+  34cf6dcedf8a534a 113,227-237
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.15",
+  "base_commit_sha": "457dfdfa2fd4d44535885096287841b2e888d87d",
+  "prompts": {
+    "34cf6dcedf8a534a": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "b5609174-dba5-4813-8735-078e31111363",
+        "model": "copilot/auto"
+      },
+      "human_author": "Rob Becker <rob.becker@workiva.com>",
+      "messages": [],
+      "total_additions": 215,
+      "total_deletions": 1,
+      "accepted_lines": 209,
+      "overriden_lines": 6
+    }
+  }
+}
