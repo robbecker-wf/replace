@@ -1,3 +1,13 @@
+## [1.1.0] - 2026-03-20
+### Added
+- Added the new `pm` CLI for editing pubspec dependency and SDK constraints.
+- Added the `tighten` command to raise dependency minimums to lockfile-resolved versions.
+- Added the `--[no-]tighten` option (enabled by default) for range-tightening behavior.
+
+### Updated
+- Updated tests and naming around the new `pm` functionality.
+- Updated CI usage and formatting-related maintenance.
+
 ## [1.0.4] - 2022-05-11
 - bug fix
 
