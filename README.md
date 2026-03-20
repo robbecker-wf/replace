@@ -1,4 +1,5 @@
 # replace
+
 Easy to use cross-platform regex replace command line util.
 Can't remember the arguments to the `find` command? or how `xargs` works?
 Maybe `sed` is a little different on your Mac than in Linux?
@@ -10,10 +11,11 @@ It's meant to be used in a directory under source control so you can see
 what files have been changed using a diff.
 
 It ignores dotfiles (especially the .git directory) except these
-  - .gitignore
-  - .pubignore
-  - .travis.yml
-  - .travis.yaml
+
+- .gitignore
+- .pubignore
+- .travis.yml
+- .travis.yaml
 
 Globs don't seem to go into dotfile directories by default so if you want to do that, just
 include another glob in the command for those (Ex: `replace fish zebra .github/**.md **/*.md`)
@@ -21,21 +23,25 @@ include another glob in the command for those (Ex: `replace fish zebra .github/*
 If you need to replace in dotfiles other than these, you can submit a PR to this repo to
 allow it or work around it by renaming the file, replacing, and renaming it back.
 
-### Installing
+## Installing
+
 `pub global activate replace`
 
 This installs both command line tools from this package:
+
 - `replace` for regex find/replace in files
 - `pm` for editing dependency constraints in pubspec.yaml files
 
 or more advanced install
+
 - clone the project
 - `pub get`
 - `dart compile exe bin/replace.dart -o replace`
 - `dart compile exe bin/pm.dart -o pm`
 - Place the `replace` and `pm` executable in your path
 
-### How to use replace
+## How to use replace
+
 `replace <regexp> <replacement> <glob_file_or_dir> ...`
 
 This means you can pass as many globs, directory names, or filenames
@@ -50,7 +56,8 @@ replacement, you can use quotes and `noglob`.
 Example: `noglob replace "key & peele" "ren || stimpy" **/*.md`
 
 Regexes and globs are Dart style
-Glob Syntax: https://pub.dev/packages/glob#syntax
+
+Glob Syntax: [https://pub.dev/packages/glob#syntax](https://pub.dev/packages/glob#syntax)
 
 The replacement may contain references to the capture groups in regexp using a backslash followed by the group number. Backslashes not followed by a number return the character immediately following them.
 
@@ -77,11 +84,14 @@ Match a word at the end of a line
 `pm [global options] <command> <dependency> <version>`
 
 Global options:
+
 - `-h, --help` Print usage information
 - `-r, --recursive` Recurse through subdirectories and process all pubspec.yaml files
 - `--fail-on-parse-error` Exit with non-zero if any pubspec.yaml cannot be parsed
+- `--[no-]tighten` Tighten is enabled by default. Use `--no-tighten` to keep explicit range output.
 
 Commands:
+
 - `set` Set dependency constraint exactly as provided
 - `set-sdk` Set `environment.sdk` constraint exactly as provided
 - `raise-min` Raise the minimum bound (inclusive) of a version range
@@ -91,12 +101,17 @@ Commands:
 - `lower-max` Lower the maximum bound (exclusive) of a version range
 
 Notes:
+
 - Updates both `dependencies` and `dev_dependencies`
 - SDK commands update `environment.sdk` only
 - `set` accepts any valid Dart version constraint, for example `^1.9.0` or `'>=1.9.0 <2.0.0'`
 - `set-sdk` accepts any valid Dart SDK constraint, for example `'>=3.3.0 <4.0.0'`
 - `raise-min`, `raise-max`, and `lower-max` expect a specific semantic version, for example `1.9.1`
 - `raise-min-sdk` and `raise-max-sdk` expect a specific semantic version, for example `3.4.0`
+- Tightening is enabled by default and only rewrites when the updated range is exactly equivalent to a caret constraint
+  - `'>=3.0.0 <4.0.0'` becomes `^3.0.0`
+  - `'>=0.18.2 <0.19.0'` becomes `^0.18.2`
+  - `'>=1.2.3 <4.0.0'` stays as a range (not equivalent to a caret constraint)
 
 ### Examples
 
@@ -130,6 +145,12 @@ Raise minimum version recursively across a monorepo:
 
 ```sh
 pm raise-min path 1.9.1 -r
+```
+
+Raise minimum version recursively and opt out of tightening:
+
+```sh
+pm raise-min path 1.9.1 -r --no-tighten
 ```
 
 Range to single version when the new minimum meets or exceeds the old maximum:
@@ -188,6 +209,12 @@ Raise SDK minimum recursively across a monorepo:
 
 ```sh
 pm raise-min-sdk 3.4.0 -r
+```
+
+Raise SDK minimum recursively and opt out of tightening:
+
+```sh
+pm raise-min-sdk 3.4.0 -r --no-tighten
 ```
 
 Raise SDK maximum recursively:
