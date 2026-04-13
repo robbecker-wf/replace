@@ -17,6 +17,30 @@ void main() {
   });
 
   group('pm CLI', () {
+    test('--version prints pm package version', () async {
+      final workDir = _copyFixture('basic', scratchRoot);
+
+      final result = await _runPm(
+        ['--version'],
+        workingDirectory: workDir.path,
+      );
+
+      expect(result.exitCode, 0, reason: result.stderr.toString());
+      expect(result.stdout.toString().trim(), _readRootPackageVersion());
+    });
+
+    test('-v prints pm package version', () async {
+      final workDir = _copyFixture('basic', scratchRoot);
+
+      final result = await _runPm(
+        ['-v'],
+        workingDirectory: workDir.path,
+      );
+
+      expect(result.exitCode, 0, reason: result.stderr.toString());
+      expect(result.stdout.toString().trim(), _readRootPackageVersion());
+    });
+
     test('set-sdk updates environment sdk constraint in current pubspec',
         () async {
       final workDir = _copyFixture('sdk_basic', scratchRoot);
@@ -106,6 +130,41 @@ void main() {
           File(p.join(workDir.path, 'pubspec.yaml')).readAsStringSync();
       expect(content, contains('path: 1.9.1'));
       expect(content, contains('version: 1.9.1'));
+    });
+
+    test('remove removes multiple dependencies across declaration styles',
+        () async {
+      final workDir = _copyFixture('remove_basic', scratchRoot);
+
+      final result = await _runPm(
+        ['remove', 'path', 'collection', 'http_parser'],
+        workingDirectory: workDir.path,
+      );
+
+      expect(result.exitCode, 0, reason: result.stderr.toString());
+      await _assertPubGetParses(workDir.path);
+
+      final content =
+          File(p.join(workDir.path, 'pubspec.yaml')).readAsStringSync();
+      expect(_containsDependencyKey(content, 'path'), isFalse);
+      expect(_containsDependencyKey(content, 'collection'), isFalse);
+      expect(_containsDependencyKey(content, 'http_parser'), isFalse);
+      expect(_containsDependencyKey(content, 'lints'), isTrue);
+    });
+
+    test('remove requires at least one package name', () async {
+      final workDir = _copyFixture('remove_basic', scratchRoot);
+
+      final result = await _runPm(
+        ['remove'],
+        workingDirectory: workDir.path,
+      );
+
+      expect(result.exitCode, 64);
+      expect(
+        result.stderr.toString(),
+        contains('requires at least 1 argument: <dependency> [dependency ...]'),
+      );
     });
 
     test('raise-min updates root fixture during recursive scan', () async {
@@ -453,6 +512,17 @@ Future<ProcessResult> _runPm(
 
 Directory get _repoRoot => Directory.current;
 
+String _readRootPackageVersion() {
+  final content =
+      File(p.join(_repoRoot.path, 'pubspec.yaml')).readAsStringSync();
+  final match =
+      RegExp(r'^version:\s*(\S+)\s*$', multiLine: true).firstMatch(content);
+  if (match == null) {
+    throw StateError('Could not read version from root pubspec.yaml');
+  }
+  return match.group(1)!;
+}
+
 bool _hasConstraint(String content, String key, String constraint) {
   return content.contains("$key: $constraint") ||
       content.contains("$key: '$constraint'") ||
@@ -463,6 +533,11 @@ bool _hasSdkConstraint(String content, String constraint) {
   return content.contains('sdk: $constraint') ||
       content.contains("sdk: '$constraint'") ||
       content.contains('sdk: "$constraint"');
+}
+
+bool _containsDependencyKey(String content, String key) {
+  final matcher = RegExp('^\\s{2}${RegExp.escape(key)}:', multiLine: true);
+  return matcher.hasMatch(content);
 }
 
 void _expectUpdateOutput(String stdout) {

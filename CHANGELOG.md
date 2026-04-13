@@ -1,3 +1,14 @@
+## [1.2.0] - 2026-04-13
+### Added
+- Added `pm remove` to remove one or more packages from `dependencies` and `dev_dependencies`.
+- Added global `pm --version` / `pm -v` output using generated package metadata.
+- Added pubspec code generation with `pubspec_generator` and `build_runner`.
+
+### Updated
+- Updated CI to run `dart run build_runner build --delete-conflicting-outputs` and fail when generated files are out of date.
+- Updated `pm` tests and fixtures for multi-package remove behavior across single-line, hosted, and git dependency declarations.
+- Updated README documentation for `pm remove` and version flag usage.
+
 ## [1.1.0] - 2026-03-20
 ### Added
 - Added the new `pm` CLI for editing pubspec dependency and SDK constraints.

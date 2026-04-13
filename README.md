@@ -81,11 +81,12 @@ Match a word at the end of a line
 
 ### Usage
 
-`pm [global options] <command> <dependency> <version>`
+`pm [global options] <command> [arguments]`
 
 Global options:
 
 - `-h, --help` Print usage information
+- `-v, --version` Print the pm version and exit
 - `-r, --recursive` Recurse through subdirectories and process all pubspec.yaml files
 - `--fail-on-parse-error` Exit with non-zero if any pubspec.yaml cannot be parsed
 - `--[no-]tighten` Tighten is enabled by default. Use `--no-tighten` to keep explicit range output.
@@ -93,6 +94,7 @@ Global options:
 Commands:
 
 - `set` Set dependency constraint exactly as provided
+- `remove` Remove one or more dependencies by package name
 - `raise-min` Raise the minimum bound (inclusive) of a version range
 - `raise-max` Raise the maximum bound (exclusive) of a version range
 - `lower-max` Lower the maximum bound (exclusive) of a version range
@@ -104,6 +106,7 @@ Commands:
 Notes:
 
 - Updates both `dependencies` and `dev_dependencies`
+- `remove` accepts one or more package names, for example `pm remove path collection http_parser`
 - SDK commands update `environment.sdk` only
 - `set` accepts any valid Dart version constraint, for example `^1.9.0` or `'>=1.9.0 <2.0.0'`
 - `set-sdk` accepts any valid Dart SDK constraint, for example `'>=3.3.0 <4.0.0'`
@@ -116,6 +119,18 @@ Notes:
   - `'>=1.2.3 <4.0.0'` stays as a range (not equivalent to a caret constraint)
 
 ### Examples
+
+Print pm version:
+
+```sh
+pm --version
+```
+
+Short form:
+
+```sh
+pm -v
+```
 
 Set a dependency version:
 
@@ -199,6 +214,34 @@ Lower max version and fail if any pubspec is malformed:
 
 ```sh
 pm lower-max path 2.5.0 -r --fail-on-parse-error
+```
+
+Remove multiple dependencies in a single command:
+
+```sh
+pm remove path collection http_parser
+```
+
+Before:
+
+```yaml
+dependencies:
+  path: ^1.9.0
+  collection:
+    hosted: https://pub.dev
+    version: ^1.19.0
+  http_parser:
+    git:
+      url: https://github.com/dart-lang/http_parser.git
+      ref: master
+```
+
+After:
+
+```yaml
+dependencies:
+  # path, collection, and http_parser entries are removed
+  # any other dependency entries remain unchanged
 ```
 
 Set SDK constraint:

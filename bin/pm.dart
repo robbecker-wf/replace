@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:pub_semver/pub_semver.dart' as semver;
+import 'package:replace/src/pm_version.dart';
 import 'package:pubspec_manager/pubspec_manager.dart'
     hide Version, VersionConstraint;
 import 'package:yaml/yaml.dart';
@@ -11,6 +12,7 @@ const _commandRaiseMax = 'raise-max';
 const _commandRaiseMaxSdk = 'raise-max-sdk';
 const _commandRaiseMin = 'raise-min';
 const _commandRaiseMinSdk = 'raise-min-sdk';
+const _commandRemove = 'remove';
 const _commandSet = 'set';
 const _commandSetSdk = 'set-sdk';
 const _commandTighten = 'tighten';
@@ -42,6 +44,12 @@ Future<int> _run(List<String> args) async {
   final showHelp = results['help'] as bool;
   if (showHelp) {
     _printUsage(parser);
+    return 0;
+  }
+
+  final showVersion = results['version'] as bool;
+  if (showVersion) {
+    stdout.writeln(pmVersion);
     return 0;
   }
 
@@ -136,6 +144,74 @@ Future<int> _run(List<String> args) async {
           ),
         );
       }
+
+      if (updateMessages.isEmpty) {
+        continue;
+      }
+
+      final after = pubspec.toString();
+      if (before == after) {
+        continue;
+      }
+
+      pubspec.saveTo(path);
+      for (final message in updateMessages) {
+        stdout.writeln(message);
+      }
+    }
+
+    if (failOnParseError && hadParseError) {
+      return 1;
+    }
+
+    return 0;
+  }
+
+  if (commandName == _commandRemove) {
+    final rest = command.rest;
+    if (rest.isEmpty) {
+      stderr.writeln(
+        'Command "$commandName" requires at least 1 argument: <dependency> [dependency ...]',
+      );
+      stderr.writeln('');
+      _printUsage(parser);
+      return 64;
+    }
+
+    final dependencyNames = <String>[];
+    for (final name in rest) {
+      final trimmed = name.trim();
+      if (trimmed.isEmpty) {
+        stderr.writeln('Dependency names must not be empty.');
+        return 64;
+      }
+      dependencyNames.add(trimmed);
+    }
+
+    final failOnParseError = results['fail-on-parse-error'] as bool;
+    final recursive = results['recursive'] as bool;
+
+    final pubspecFiles = _findPubspecFiles(recursive: recursive);
+    if (pubspecFiles.isEmpty) {
+      return 0;
+    }
+
+    var hadParseError = false;
+    for (final path in pubspecFiles) {
+      PubSpec pubspec;
+      try {
+        pubspec = PubSpec.loadFromPath(path);
+      } catch (e) {
+        hadParseError = true;
+        stderr.writeln('Unable to parse $path: $e');
+        if (failOnParseError) {
+          return 1;
+        }
+        continue;
+      }
+
+      final before = File(path).readAsStringSync();
+      final updateMessages = _removeDependencies(pubspec, dependencyNames);
 
       if (updateMessages.isEmpty) {
         continue;
@@ -467,10 +543,35 @@ List<String> _applyToSdk(
   return [_buildUpdateMessage('sdk', currentText, nextText)];
 }
 
+List<String> _removeDependencies(
+  PubSpec pubspec,
+  List<String> dependencyNames,
+) {
+  final messages = <String>[];
+
+  for (final dependencyName in dependencyNames) {
+    final inDependencies = pubspec.dependencies[dependencyName] != null;
+    if (inDependencies) {
+      pubspec.dependencies.remove(dependencyName);
+      messages.add('$dependencyName removed from dependencies');
+    }
+
+    final inDevDependencies = pubspec.devDependencies[dependencyName] != null;
+    if (inDevDependencies) {
+      pubspec.devDependencies.remove(dependencyName);
+      messages.add('$dependencyName removed from dev_dependencies');
+    }
+  }
+
+  return messages;
+}
+
 ArgParser _buildParser() {
   final parser = ArgParser()
     ..addFlag('help',
         abbr: 'h', negatable: false, help: 'Print this usage information.')
+    ..addFlag('version',
+        abbr: 'v', negatable: false, help: 'Print the pm version and exit.')
     ..addFlag(
       'fail-on-parse-error',
       negatable: false,
@@ -492,6 +593,7 @@ ArgParser _buildParser() {
 
   for (final command in [
     _commandLowerMax,
+    _commandRemove,
     _commandRaiseMax,
     _commandRaiseMaxSdk,
     _commandRaiseMin,
@@ -514,6 +616,8 @@ void _printUsage(ArgParser parser) {
   stdout.writeln('Available commands:');
   stdout.writeln('(dependencies)');
   stdout.writeln('  set         Set the version of a dependency');
+  stdout
+      .writeln('  remove      Remove one or more dependencies by package name');
   stdout.writeln(
       '  lower-max   Lower the maximum allowed version (exclusive) of a dependency.');
   stdout.writeln(
