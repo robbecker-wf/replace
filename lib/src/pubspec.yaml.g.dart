@@ -164,7 +164,8 @@ sealed class Pubspec {
   /// Think of the description as the sales pitch for your package.
   /// Users see it when they [browse for packages](https://pub.dev/packages).
   /// The description is plain text: no markdown or HTML.
-  static const String description = r'An easy to use cross-platform regex replace command line util.';
+  static const String description =
+      r'An easy to use cross-platform regex replace command line util.';
 
   /// Homepage
   ///
@@ -484,5 +485,4 @@ sealed class Pubspec {
       'pm': r'',
     },
   };
-
 }
