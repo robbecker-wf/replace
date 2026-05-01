@@ -1,0 +1,14 @@
+.github/workflows/publish.yml
+  h_c284ada07cb5e3 61
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "ea28ffe19498ae7b9d0c94dc1ae88d7139f2ab58",
+  "prompts": {},
+  "humans": {
+    "h_c284ada07cb5e3": {
+      "author": "Rob Becker"
+    }
+  }
+}
