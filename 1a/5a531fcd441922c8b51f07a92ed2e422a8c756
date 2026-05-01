@@ -1,0 +1,28 @@
+.github/workflows/publish.yml
+  a9044d0e9ccb5064 14-57
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "1a5a531fcd441922c8b51f07a92ed2e422a8c756",
+  "prompts": {
+    "a9044d0e9ccb5064": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8d126783-ab45-4a5a-a84d-270524f7119c",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Rob Becker",
+      "messages": [],
+      "total_additions": 98,
+      "total_deletions": 54,
+      "accepted_lines": 45,
+      "overriden_lines": 0
+    }
+  },
+  "humans": {
+    "h_c284ada07cb5e3": {
+      "author": "Rob Becker"
+    }
+  }
+}
