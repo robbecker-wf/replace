@@ -26,35 +26,15 @@ jobs:
 
       - name: Compile for Linux
         run: |
-          dart compile exe bin/replace.dart -o replace-linux --target-os=linux
-          dart compile exe bin/pm.dart -o pm-linux --target-os=linux
-
-      - name: Compile for macOS (Apple Silicon)
-        run: |
-          dart compile exe bin/replace.dart -o replace-mac --target-os=macos
-
-      - name: Compile for macOS (Intel)
-        run: |
-          dart compile exe bin/replace.dart -o replace-macos-x64 --target-os=macos --target-arch=x64
-          dart compile exe bin/pm.dart -o pm-macos-x64 --target-os=macos --target-arch=x64
-
-      - name: Compile for Windows
-        run: |
-          dart compile exe bin/replace.dart -o replace.exe --target-os=windows
-          dart compile exe bin/pm.dart -o pm.exe --target-os=windows
+          dart compile exe bin/replace.dart -o replace --target-os=linux
+          dart compile exe bin/pm.dart -o pm --target-os=linux
 
       - if: github.event_name != 'workflow_dispatch'
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            replace-linux
-            replace-macos-arm64
-            replace-macos-x64
-            replace.exe
-            pm-linux
-            pm-macos-arm64
-            pm-macos-x64
-            pm.exe
+            replace
+            pm
 
   publish:
     name: Publish to pub.dev
