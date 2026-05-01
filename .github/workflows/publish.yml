@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -30,8 +31,7 @@ jobs:
 
       - name: Compile for macOS (Apple Silicon)
         run: |
-          dart compile exe bin/replace.dart -o replace-macos-arm64 --target-os=macos --target-arch=arm64
-          dart compile exe bin/pm.dart -o pm-macos-arm64 --target-os=macos --target-arch=arm64
+          dart compile exe bin/replace.dart -o replace-mac --target-os=macos
 
       - name: Compile for macOS (Intel)
         run: |
@@ -43,7 +43,8 @@ jobs:
           dart compile exe bin/replace.dart -o replace.exe --target-os=windows
           dart compile exe bin/pm.dart -o pm.exe --target-os=windows
 
-      - uses: softprops/action-gh-release@v2
+      - if: github.event_name != 'workflow_dispatch'
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             replace-linux
