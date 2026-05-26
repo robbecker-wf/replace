@@ -1,0 +1,12 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "0125bcd6cf49ae2e923a77bccf37db47a06e709b",
+  "prompts": {},
+  "humans": {
+    "h_3ae32f2e484ef5": {
+      "author": "Rob Becker <rob.becker@workiva.com>"
+    }
+  }
+}
