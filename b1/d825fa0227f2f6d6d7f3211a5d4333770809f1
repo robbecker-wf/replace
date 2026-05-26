@@ -1,0 +1,14 @@
+pubspec.yaml
+  h_3ae32f2e484ef5 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "b1d825fa0227f2f6d6d7f3211a5d4333770809f1",
+  "prompts": {},
+  "humans": {
+    "h_3ae32f2e484ef5": {
+      "author": "Rob Becker <rob.becker@workiva.com>"
+    }
+  }
+}
