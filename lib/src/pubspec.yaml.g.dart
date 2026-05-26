@@ -126,10 +126,10 @@ sealed class Pubspec {
     5,
     26,
     22,
-    45,
-    39,
-    772,
-    949,
+    50,
+    38,
+    418,
+    139,
   );
 
   /// Name
@@ -165,7 +165,7 @@ sealed class Pubspec {
   /// Users see it when they [browse for packages](https://pub.dev/packages).
   /// The description is plain text: no markdown or HTML.
   static const String description =
-      r'An easy to use cross-platform regex replace command line util.';
+      r'An easy to use cross-platform regex replace command line util and pm CLI to modify pubspec.yaml files.';
 
   /// Homepage
   ///
