@@ -1,0 +1,22 @@
+CHANGELOG.md
+  h_3ae32f2e484ef5 1-13
+test/pm_test.dart
+  h_3ae32f2e484ef5 115-275,548-582,635,666,698,708,712-788
+README.md
+  h_3ae32f2e484ef5 93,103,115,119-120,223-226,263-272
+bin/pm.dart
+  h_3ae32f2e484ef5 17,21-26,75-76,90-91,102-103,105-113,117-122,129-135,182,184,192-197,233,260,262,270-412,487,540,542,550-566,569-615,840-846,857,864-869,893-894
+pubspec.yaml
+  h_3ae32f2e484ef5 2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "024c181f695f9d9ed20c4f3c826065801c4b63fc",
+  "prompts": {},
+  "humans": {
+    "h_3ae32f2e484ef5": {
+      "author": "Rob Becker <rob.becker@workiva.com>"
+    }
+  }
+}
