@@ -1,0 +1,25 @@
+.tool-versions
+  3870d62a13058d65 1
+lib/src/pubspec.yaml.g.dart
+  3870d62a13058d65 167-168
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "base_commit_sha": "3619e9fcf7b30676266f51b6d4dec34dad717d8f",
+  "git_ai_version": "0.1.0",
+  "prompts": {
+    "3870d62a13058d65": {
+      "agent_id": {
+        "tool": "claude-code",
+        "id": "438bb136-2798-4dff-b048-21d0092dae48",
+        "model": "claude-opus-4-6[1m]"
+      },
+      "human_author": "rob.becker@workiva.com",
+      "messages": [],
+      "total_additions": 3,
+      "total_deletions": 3,
+      "accepted_lines": 3,
+      "overriden_lines": 0
+    }
+  }
+}
