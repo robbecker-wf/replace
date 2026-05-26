@@ -1,0 +1,14 @@
+analysis_options.yaml
+  h_3ae32f2e484ef5 4-7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "52730d41e9c718bd599263851d04fb4793ccf6e3",
+  "prompts": {},
+  "humans": {
+    "h_3ae32f2e484ef5": {
+      "author": "Rob Becker <rob.becker@workiva.com>"
+    }
+  }
+}
