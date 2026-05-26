@@ -1,3 +1,7 @@
 analyzer:
   exclude:
     - test/fixtures/**
+
+formatter:
+  exclude:
+    - "lib/src/pubspec.yaml.g.dart"
